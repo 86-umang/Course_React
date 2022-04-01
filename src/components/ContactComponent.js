@@ -57,22 +57,32 @@ class Contact extends Component {
             email: ''
         };
 
+        // First Name & Last Name
+        const reg = new RegExp('^(?=[a-zA-Z]*$)(?!.*[0-9])');
+        
         if (this.state.touched.firstname && firstname.length < 3)
             errors.firstname = 'First Name shuold be >= 3 characters';
         else if (this.state.touched.firstname && firstname.length >10)
             errors.firstname = 'First Name shuold be <= 10 characters';
+        else if (this.state.touched.firstname && !reg.test(firstname))
+            errors.firstname = 'First Name should contain only alphabetic characters.'
         
         if (this.state.touched.lastname && lastname.length < 3)
             errors.lastname = 'Last Name shuold be >= 3 characters';
         else if (this.state.touched.lastname && lastname.length >10)
             errors.lastname = 'Last Name shuold be <= 10 characters';
+        else if (this.state.touched.lastname && !reg.test(lastname))
+            errors.lastname = 'Last Name should contain only alphabetic characters.'
 
-        const reg = /^\d+$/;
-        if (this.state.touched.telnum && !reg.test(telnum))
-            errors.telnum = "Tel. Number should contain only numbers";
+        // Telephone
+        const regTel = new RegExp('^(\\+\\d{1,2})?\\d{10}$');
+        if (this.state.touched.telnum && !regTel.test(telnum))
+            errors.telnum = "Tel. Number should contain only 10 digits.";
 
-        if (this.state.touched.email && email.split('').filter(x => x === '@').length !== 1)
-            errors.email = "Email should contain a @";
+        // Email
+        const regEmail = new RegExp('^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$');
+        if (this.state.touched.email && !regEmail.test(email))
+            errors.email = "You have entered an invalid email address!";
 
         return errors;
         
