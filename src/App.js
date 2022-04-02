@@ -1,26 +1,23 @@
 import React, {Component} from 'react';
+import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import './App.css';
 import Main from './components/MainComponent';
-import { DISHES } from './shared/dishes';
+import { ConfigureStore } from './redux/configureStore';
+
+const store = ConfigureStore();
 
 class App extends Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      dishes: DISHES
-    }
-  }
-
   render() {
     return (
-      <BrowserRouter>
-        <div>
-          <Main />
-        </div>
-      </BrowserRouter>
+      <Provider store={store} >
+        <BrowserRouter>
+          <div>
+            <Main />
+          </div>
+        </BrowserRouter>
+      </Provider>
     );
   }
 }
