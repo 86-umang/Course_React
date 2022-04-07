@@ -29,7 +29,7 @@ function RenderDish({dish}) {
     }
 }
 
-function RenderComments({comments}){
+function RenderComments({comments, addComment, dishId}){
     const cmnts = comments.map((comment) => {
         return (
             <div key={comment.id}>
@@ -52,7 +52,7 @@ function RenderComments({comments}){
             <ul className='list-unstyled'>
                 {cmnts}
             </ul>
-            <CommentForm />
+            <CommentForm dishId={dishId} addComment={addComment} />
         </div>
     )
 }
@@ -76,8 +76,7 @@ class CommentForm extends Component {
 
     handleSubmit(values) {
         this.togglModal();
-        console.log("Current State is: " + JSON.stringify(values));
-        alert("Current State is: " + JSON.stringify(values));
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment)
     }
 
     render(){
@@ -145,6 +144,7 @@ function DishDetail(props){
     
     const dish = props.dish;
     const comments = props.comments;
+    const addComment = props.addComment;
     
     if (dish == null) {
         return (<div></div>);
@@ -164,7 +164,9 @@ function DishDetail(props){
             </div>
             <div className="row">
                 <RenderDish dish={dish} />
-                <RenderComments comments={comments} />
+                <RenderComments comments={comments} 
+                    addComment={addComment}
+                    dishId={dish.id} />
             </div>
         </div>
     )
